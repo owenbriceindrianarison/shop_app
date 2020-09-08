@@ -22,11 +22,19 @@ class Cart with ChangeNotifier {
   }
 
   int get itemsCount {
-    int count = 0;
-    _items.forEach((_, item) {
-      count = count + item.quantity;
+    var count = 0;
+    _items.forEach((_, cartItem) {
+      count += cartItem.quantity;
     });
     return count;
+  }
+
+  double get totalAmount {
+    var total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price;
+    });
+    return total;
   }
 
   void addCart(

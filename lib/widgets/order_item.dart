@@ -6,7 +6,7 @@ import '../providers/orders.dart' as ord;
 class OrderItem extends StatelessWidget {
   final ord.OrderItem order;
 
-  const OrderItem(this.order);
+  OrderItem(this.order);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class OrderItem extends StatelessWidget {
               '\$${order.amount}',
             ),
             subtitle: Text(
-              DateFormat('dd MM yyyy').format(order.dateTime),
+              DateFormat('dd/MM/yyyy hh:mm').format(order.dateTime),
             ),
             trailing: IconButton(
                 icon: Icon(
                   Icons.expand_more,
                 ),
-                onPressed: null),
+                onPressed: () {}),
           ),
         ],
       ),

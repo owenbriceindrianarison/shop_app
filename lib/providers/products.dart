@@ -56,9 +56,9 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url = 'https://shop-app-5e7fe.firebaseio.com/products.json';
-    http
+    return http
         .post(
       url,
       body: json.encode(

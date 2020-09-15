@@ -23,6 +23,24 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _selectFavorite = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchAndSetProduct().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,22 +88,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: FutureBuilder(
-          future: Provider.of<Products>(context, listen: false)
-              .fetchAndSetProduct(),
-          builder: (ctx, dataSnapShop) {
-            if (dataSnapShop.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else {
-              if (dataSnapShop.error != null) {
-                return Center(child: const Text('An error occurred!'));
-              } else {
-                return ProductsGrid(
-                  onlyFavorites: _selectFavorite,
-                );
-              }
-            }
-          }),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(
+              onlyFavorites: _selectFavorite,
+            ),
     );
   }
 }
